@@ -22,16 +22,16 @@ public:
 	virtual ~Vec3d();
 	virtual float magnitude();
 	virtual Vec3d normalize();
-	virtual Vec3d operator + (Vec3d);
-	virtual Vec3d operator - (Vec3d);
+	virtual Vec3d operator + (const Vec3d);
+	virtual Vec3d operator - (const Vec3d);
 };
 
-Vec3d Vec3d::operator + (Vec3d param)
+Vec3d Vec3d::operator + (const Vec3d param)
 {
 	return Vec3d(this->x + param.x, this->y + param.y, this->z + param.z);
 }
 
-Vec3d Vec3d::operator - (Vec3d param)
+Vec3d Vec3d::operator - (const Vec3d param)
 {
 	return Vec3d(this->x - param.x, this->y - param.y, this->z - param.z);
 }
