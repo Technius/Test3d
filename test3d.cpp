@@ -25,8 +25,11 @@ void perspectiveGL(GLdouble fovY, GLdouble aspect, GLdouble zNear, GLdouble zFar
 
 void initGL(int width, int height)
 {
+	cout << "Initializing OpenGL" << endl;
 	glMatrixMode(GL_PROJECTION);
-	perspectiveGL(60, width/height, 0.01, 1000);
+	GLdouble aspect = 75;
+	cout << "Viewing angle: " << aspect << " degrees" << endl;
+	perspectiveGL(aspect, width/height, 0.01, 1000);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glEnable(GL_DEPTH_TEST);
@@ -40,38 +43,37 @@ double toRad(double deg)
 int main()
 {
 	const int width = 1280, height = 720;
-    sf::RenderWindow App(sf::VideoMode(width, height, 32), "Test 3D", sf::Style::Fullscreen);
-    initGL(width, height);
     Vec3d pos(0, 0, -3);
     Vec3f rot(0, 0, 0);
-    App.setFramerateLimit(60);
     Rect3d r(Vec3d(0, 0, 0), Vec3d(1, 1, 1));
+	cout << "Initialized in resolution " << width << "x" << height << endl;
+    sf::RenderWindow App(sf::VideoMode(width, height, 32), "Test 3D", sf::Style::Fullscreen);
+    initGL(width, height);
+    App.setFramerateLimit(60);
+    cout << "Framerate limited to 60 frames per second" << endl;
+    cout << "Initial position: " << pos.x << "," << pos.y << "," << pos.z << endl;
     while(App.isOpen())
     {
     	sf::Event event;
     	while(App.pollEvent(event))
     	{
-    		if(event.type == sf::Event::Closed)App.close();
+    		if(event.type == sf::Event::Closed)
+    		{
+    			cout << "Received kill signal" << endl;
+    			App.close();
+    		}
     	}
     	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     	{
-    		if(rot.y == 0)pos.z += 0.01;
-    		else
-    		{
-    			double ry = toRad(rot.y);
-    			pos.z += 0.01*sin(ry);
-    			pos.x += 0.01*cos(ry);
-    		}
+			double ry = toRad(rot.y);
+			pos.z += 0.01*sin(ry);
+			pos.x += 0.01*cos(ry);
     	}
     	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     	{
-    		if(rot.y == 0)pos.z += 0.01;
-    		else
-    		{
-    			double ry = toRad(rot.y + 180);
-    			pos.z += 0.01*sin(ry);
-    			pos.x += 0.01*cos(ry);
-    		}
+			double ry = toRad(rot.y + 180);
+			pos.z += 0.01*sin(ry);
+			pos.x += 0.01*cos(ry);
     	}
     	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     	{
@@ -95,8 +97,8 @@ int main()
     	}
     	if(sf::Keyboard::isKeyPressed(sf::Keyboard::R))rot.x == 0 ? rot.x = 359 : rot.x -= 1;
     	if(sf::Keyboard::isKeyPressed(sf::Keyboard::F))rot.x == 359 ? rot.x = 0 : rot.x += 1;
-    	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))pos.y += 0.01;
-    	if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))pos.y -= 0.01;
+    	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))pos.y -= 0.01;
+    	if(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))pos.y += 0.01;
     	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))rot.y == 0 ? rot.y = 359 : rot.y -= 1;
     	if(sf::Keyboard::isKeyPressed(sf::Keyboard::E))rot.y == 359 ? rot.y = 0 : rot.y += 1;
     	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
