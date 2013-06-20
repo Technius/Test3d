@@ -25,11 +25,8 @@ public:
 
 void Rect3d::render(Vec3d cam)
 {
-	Vec3d *a = &cam;
-	Vec3d *b = this->p1;
-	Vec3d *c = this->p2;
-	Vec3d p1 = *b + *a;
-	Vec3d p2 = *c + *a;
+	Vec3d p1 = *(&cam) + *this->p1;
+	Vec3d p2 = *(&cam) + *this->p2;
 	glBegin(GL_QUADS);
 	//Front face
 	glColor3f(1, 0, 0);
@@ -68,15 +65,11 @@ void Rect3d::render(Vec3d cam)
 	glVertex3f(p2.x, p2.y, p2.z);
 	glVertex3f(p1.x, p2.y, p2.z);
 	glEnd();
-	delete b;
-	delete c;
-	delete a;
 }
 
 Rect3d::~Rect3d()
 {
-	delete this->p1;
-	delete this->p2;
+
 }
 
 
